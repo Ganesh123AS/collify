@@ -1,7 +1,8 @@
 // libs/http/index.ts
 import axios from 'axios';
+import type { AxiosRequestConfig } from 'axios';
 
-export const httpClient = axios.create({
+const instance = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
@@ -9,7 +10,7 @@ export const httpClient = axios.create({
 });
 
 // Request interceptor — attach token
-httpClient.interceptors.request.use((config) => {
+instance.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
@@ -18,7 +19,7 @@ httpClient.interceptors.request.use((config) => {
 });
 
 // Response interceptor — unwrap or normalize errors
-httpClient.interceptors.response.use(
+instance.interceptors.response.use(
   (response) => response.data,   // ← unwraps so you get data directly
   (error) => {
     const normalized = {
@@ -29,3 +30,21 @@ httpClient.interceptors.response.use(
     return Promise.reject(normalized);
   }
 );
+
+
+export const httpClient = {
+  get: <T>(url: string, config?: AxiosRequestConfig): Promise<T> =>
+    instance.get(url, config),
+
+  post: <T>(url: string, data?: unknown, config?: AxiosRequestConfig): Promise<T> =>
+    instance.post(url, data, config),
+
+  put: <T>(url: string, data?: unknown, config?: AxiosRequestConfig): Promise<T> =>
+    instance.put(url, data, config),
+
+  patch: <T>(url: string, data?: unknown, config?: AxiosRequestConfig): Promise<T> =>
+    instance.patch(url, data, config),
+
+  delete: <T>(url: string, config?: AxiosRequestConfig): Promise<T> =>
+    instance.delete(url, config),
+};

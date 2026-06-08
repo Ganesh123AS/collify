@@ -1,9 +1,9 @@
 import { httpClient } from "../../../libs/http";
-import type { Banner, BannerQuery, CreateBannerPayload, UpdateBannerPayload } from "../types";
+import type { Banner, BannerListResponse, BannerQuery, CreateBannerPayload, UpdateBannerPayload } from "../types";
 
 export const homepageApi = {
  getBanners: (location: string, q?: BannerQuery) =>
-    httpClient.get<Banner[]>('/v1/banners/', {
+    httpClient.get<BannerListResponse>('/v1/banners/', {
       params: { location, ...q },
     }),
 

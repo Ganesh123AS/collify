@@ -9,6 +9,13 @@ export interface Banner {
     updatedAt: string;
 }
 
+export interface BannerListResponse {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: any[];
+}
+
 // POST — creating a new banner
 export interface CreateBannerPayload {
     title: string;

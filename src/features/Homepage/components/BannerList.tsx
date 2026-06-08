@@ -5,8 +5,6 @@ import { consQuery } from '../../../constants/query';
 
 const BannerList = () => {
   const { data, isLoading } = useGetBanners({ location: 'login', q: consQuery });
-  console.log("🚀 ~ BannerList ~ data:", data)
-
   const { mutate: createBanner, isPending: isCreating } = useCreateBanner();
 
   if (isLoading) return <p>Loading...</p>;
@@ -20,10 +18,10 @@ const BannerList = () => {
         Add Banner
       </button>
 
-      {data?.results?.map((banner) => (
+      {data?.results?.map((banner: any) => (
         <div key={banner.id}>
           <span>{banner.title}</span>
-<img src={banner.banner} alt="image" />
+          <img src={banner.banner} alt="image" />
         </div>
       ))}
     </div>
